@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: nextjs-pipelerun-
+spec:
+  params:
+    - name: app-name
+      value: nextjs-app-chrisley
+    - name: source-repo
+      value: 'https://github.com/chrisley75/nextjs-sample-app' 
+    - name: image-repo
+      value: quay.io/chrisley7506/simple-nextjs-app
+  pipelineRef:
+    name: nextjs
+  serviceAccountName: build-bot
+  workspaces:
+    - name: pipeline-shared-data
+      volumeClaimTemplate:
+        metadata:
+          creationTimestamp: null
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+    - name: gitops-repository
+      volumeClaimTemplate:
+        metadata:
+          creationTimestamp: null
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi

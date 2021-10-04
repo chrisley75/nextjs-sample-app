@@ -1,0 +1,45 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: vcs-trigger
+spec:
+  params:
+  - description: Source code repository
+    name: source-repo
+  - description: Precise SHA of the commit to build
+    name: sha
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: nextjs-pipelinerun-
+    spec:
+      params:
+      - name: app-name
+        value: nextjs-app-chrisley
+      - name: image-repo
+        value: quay.io/chrisley7506/simple-nextjs-app
+      - name: source-repo
+        value: 'https://github.com/chrisley75/nextjs-sample-app' 
+      - name: sha
+        value: $(tt.params.sha)
+      pipelineRef:
+        name: nextjs
+      serviceAccountName: build-bot
+      workspaces:
+      - name: pipeline-shared-data
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 1Gi
+      - name: gitops-repository
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 1Gi

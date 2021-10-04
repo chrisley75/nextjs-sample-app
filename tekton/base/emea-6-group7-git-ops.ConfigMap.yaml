@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: emea-6-group7-configmap
+data:
+  branch: main
+  host: github.com
+  org: cloud-native-garage-method-cohort
+  protocol: https
+  repo: emea-6-group7-git-ops
+
