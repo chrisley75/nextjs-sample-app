@@ -14,4 +14,4 @@ commonLabels:
   app.kubernetes.io/name: nextjs-app-chrisley
 replicas:
 - name: nextjs-app
-  count: 6
+  count: 1
